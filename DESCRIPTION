@@ -1,0 +1,12 @@
+Package: fraisty
+Title: Fraisty Data Analysis
+Version: 0.0.1
+Authors@R: 
+    person(given = "Ben",
+           family = "Sheppard",
+           role = c("aut", "cre"),
+           email = "bshepp@umich.edu")
+Description: Tests performance behavior datasets and reports on the heterogeneity of performers.
+License: GPL >= 2
+Encoding: UTF-8
+LazyData: true
