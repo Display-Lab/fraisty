@@ -1,21 +1,54 @@
 context("main entry point")
 
-test_that("main function runs silently", {
-  temp_path <- tempfile()
-  temp_file <- file(temp_path)
-  expect_silent(main(temp_file))
-  unlink(temp_file)
-})
+dummy_data_file <- function() {
+  temp_file <- file(tempfile(), "w+")
+  writeLines("string, with, commas", temp_file)
+  return(temp_file)
+}
+
+dummy_spek_file <- function() {
+  temp_file <- file(tempfile(), "w+")
+  writeLines('{"key": "value"}', temp_file)
+  return(temp_file)
+}
 
 test_that("main accepts the CLI parameters", {
-  expect_silent(main(data_path = "noop", spek_path = "foo"))
+  data_file <- dummy_data_file()
+  spek_file <- dummy_spek_file()
+  expect_silent(main(data_file, spek_file))
+  unlink(summary(data_file)$description)
+  unlink(summary(spek_file)$description)
 })
 
 test_that("main can read from stdin", {
-  temp_file <- file()
-  writeLines("mary had a little lamb", temp_file)
-  options(fraisty.connection = temp_file)
-  main(data_path=NULL)
-  text_remaining <- readLines(temp_file)
-  expect_identical(text_remaining, character(0))
+  data_file <- dummy_data_file()
+  spek_file <- dummy_spek_file()
+
+  options(fraisty.connection = data_file)
+  main(data_path=NULL, spek_file)
+  expect_identical(readLines(data_file), character(0))
+
+  unlink(summary(data_file)$description)
+  unlink(summary(spek_file)$description)
 })
+
+test_that("main can read in spekfile", {
+  data_file <- dummy_data_file()
+  spek_file <- dummy_spek_file()
+
+  main(data_file, spek_file)
+  expect_identical(readLines(spek_file), character(0))
+
+  unlink(summary(data_file)$description)
+  unlink(summary(spek_file)$description)
+})
+
+test_that("main gives error when no spek is given", {
+  data_file <- dummy_data_file()
+
+  expect_error(main(data_file, spek_path=NULL), "no spek given")
+
+
+  unlink(summary(data_file)$description)
+})
+
