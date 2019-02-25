@@ -12,12 +12,19 @@ dummy_spek_file <- function() {
   return(temp_file)
 }
 
+close_and_unlink <- function(conn) {
+  unlink(summary(conn)$description)
+  close(conn)
+}
+
 test_that("main accepts the CLI parameters", {
   data_file <- dummy_data_file()
   spek_file <- dummy_spek_file()
+
   expect_silent(main(data_file, spek_file))
-  unlink(summary(data_file)$description)
-  unlink(summary(spek_file)$description)
+
+  close_and_unlink(data_file)
+  close_and_unlink(spek_file)
 })
 
 test_that("main can read from stdin", {
@@ -28,8 +35,8 @@ test_that("main can read from stdin", {
   main(data_path=NULL, spek_file)
   expect_identical(readLines(data_file), character(0))
 
-  unlink(summary(data_file)$description)
-  unlink(summary(spek_file)$description)
+  close_and_unlink(data_file)
+  close_and_unlink(spek_file)
 })
 
 test_that("main can read in spekfile", {
@@ -39,8 +46,8 @@ test_that("main can read in spekfile", {
   main(data_file, spek_file)
   expect_identical(readLines(spek_file), character(0))
 
-  unlink(summary(data_file)$description)
-  unlink(summary(spek_file)$description)
+  close_and_unlink(data_file)
+  close_and_unlink(spek_file)
 })
 
 test_that("main gives error when no spek is given", {
@@ -48,7 +55,6 @@ test_that("main gives error when no spek is given", {
 
   expect_error(main(data_file, spek_path=NULL), "no spek given")
 
-
-  unlink(summary(data_file)$description)
+  close_and_unlink(data_file)
 })
 
