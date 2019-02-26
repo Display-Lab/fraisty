@@ -4,3 +4,6 @@ cache: packages
 r:
   - oldrel
   - release
+
+before_install:
+  - sudo apt-get install -y libv8-dev
