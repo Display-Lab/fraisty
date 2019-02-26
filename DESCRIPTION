@@ -11,5 +11,11 @@ License: GPL >= 2
 Encoding: UTF-8
 LazyData: true
 Suggests: 
-    testthat
+    testthat,
+    roxygen2
+Imports:
+  jsonld,
+  jsonlite,
+  readr,
+  rlang
 RoxygenNote: 6.1.1
