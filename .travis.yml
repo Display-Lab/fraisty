@@ -1,13 +1,13 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
-language: r
+---
+language: R
 cache: packages
-sudo: false
-fortran: false
-latex: false
-pandoc: false
+warnings_are_errors: false
 
 r:
-  - r: oldrel
-  - r: devel
-  - r: release
+  - oldrel
+  - release
+
+addons:
+  apt:
+    packages:
+      - libv8-dev
