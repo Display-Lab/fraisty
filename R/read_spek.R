@@ -16,13 +16,20 @@ read_spek <- function(path) {
 
   spek_str <- readr::read_file(path)
   parsing_result <- tryCatch(jsonlite::parse_json(spek_str), error = parse_error_handler)
+
   if(is.integer(parsing_result)) {
     rlang::abort("file not json")
   }
+
   expanded <- jsonld::jsonld_expand(spek_str)
   converted <- jsonlite::fromJSON(expanded, simplifyDataFrame = F)
 
-  return(converted)
+  if(length(converted) > 0) {
+    return(converted[[1]])
+  }
+  else {
+    return(list())
+  }
 }
 
 

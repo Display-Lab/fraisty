@@ -1,25 +1,22 @@
 context("spek read-in functionality")
 
-dummy_spek_file <- function() {
-  temp_file <- file(tempfile(), "w+")
-  writeLines('{"key": "value"}', temp_file)
-  return(temp_file)
-}
-
 empty_spek <- tempfile()
 not_json <- tempfile()
 not_json_int <- tempfile()
+jsonld_str <- tempfile()
 
 setup({
   writeLines("{}", empty_spek)
   writeLines("not json", not_json)
   writeLines("123", not_json_int)
+  writeLines('{"http://schema.org/name": "Manu Sporny","http://schema.org/url": { "@id": "http://manu.sporny.org/" }}', jsonld_str)
 })
 
 teardown({
   unlink(empty_spek)
   unlink(not_json_int)
   unlink(not_json)
+  unlink(jsonld_str)
 })
 
 test_that("accepts path parameter and returns list", {
@@ -40,4 +37,9 @@ test_that("throw error if file is not found", {
 test_that("throw error if file is not json", {
   expect_error(read_spek(not_json_int), "file not json")
   expect_error(read_spek(not_json), "file not json")
+})
+
+test_that("top level list of graphs is eschewed", {
+  result <- read_spek(jsonld_str)
+  expect_false(length(result) == 1)
 })
