@@ -13,4 +13,9 @@ LazyData: true
 Suggests: 
     testthat,
     roxygen2
+Imports:
+  jsonld,
+  jsonlite,
+  readr,
+  rlang
 RoxygenNote: 6.1.1
