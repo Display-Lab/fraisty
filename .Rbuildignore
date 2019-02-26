@@ -1,2 +1,4 @@
 ^fraisty\.Rproj$
 ^\.Rproj\.user$
+^data$
+^bin$
