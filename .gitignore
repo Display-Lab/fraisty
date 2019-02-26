@@ -3,5 +3,6 @@
 .RData
 .Ruserdata
 data/*
+exampledata/*
 *.Rproj
 man/*
