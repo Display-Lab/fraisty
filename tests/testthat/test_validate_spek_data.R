@@ -1,6 +1,19 @@
+library(tibble)
 context("Validates Spek with Data")
 
-library(tibble)
+INPUT_TABLE_IRI <- "http://example.com/slowmo#input_table"
+TABLE_SCHEMA_IRI <- "http://www.w3.org/ns/csvw#tableSchema"
+MEASURE_IRI <- "http://example.com/slowmo#measure"
+COLUMNS_IRI <- "http://www.w3.org/ns/csvw#columns"
+TABLE_IRI <- "http://www.w3.org/ns/csvw#Table"
+DIALECT_IRI <- "http://www.w3.org/ns/csvw#dialect"
+
+data_all_cols <- tibble::tribble(
+  ~performer, ~timepoint,             ~performance,
+  "bob",      1, 10,
+  "alice",    2, 20,
+  "carol",    3, 30
+)
 
 spek_missing_cols <-
   list(
@@ -19,7 +32,7 @@ spek_missing_cols <-
     )
   )
 
-spek_with_cols <-
+column_specification <-
   list(
     list(
       `http://www.w3.org/ns/csvw#datatype` = list(list(`@value` = "string")),
@@ -53,5 +66,24 @@ test_that("returns boolean from given spek/data", {
 })
 
 test_that("spek without column specification can't fail", {
+  result <- validate_spek_data(spek_missing_cols, tibble())
+  expect_true(result)
+})
 
+test_that("spek missing a column will fail", {
+  missing_col <- column_specification
+  missing_col[3] <- NULL
+  spek_missing_one_column <- spek_missing_cols
+  spek_missing_one_column[[INPUT_TABLE_IRI]][[1]][[TABLE_SCHEMA_IRI]][[1]][[COLUMNS_IRI]] <- missing_col
+  result <- validate_spek_data(spek_missing_one_column, data_all_cols)
+  expect_false(result)
+})
+
+test_that("speak with extra column passes", {
+  spek_with_columns <- spek_missing_cols
+  spek_with_columns[[INPUT_TABLE_IRI]][[1]][[TABLE_SCHEMA_IRI]][[1]][[COLUMNS_IRI]] <- column_specification
+  data_extra_columns <- data_all_cols
+  data_extra_columns["extra"] <- c("extra", "column", "space")
+  result <- validate_spek_data(spek_with_columns, data_extra_columns)
+  expect_true(result)
 })
