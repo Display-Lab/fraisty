@@ -30,11 +30,13 @@ while (( "$#" )); do
       ;;
     -d|--data)
       DATA_FILE="'${2}'"
-      shift 2
+      shift
+      shift
       ;;
     -s|--spek)
       SPEK_FILE="'${2}'"
-      shift 2
+      shift
+      shift
       ;;
     --) # end argument parsing if no argument is left
       shift
@@ -55,5 +57,5 @@ INPUT_ARGS="spek_path=${SPEK_FILE:-NULL},\
   data_path=${DATA_FILE:-NULL}"
 
 EXPR="fraisty::main(${INPUT_ARGS})"
-echo EXPR
+echo $EXPR
 
