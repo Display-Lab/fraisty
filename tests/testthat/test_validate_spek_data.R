@@ -1,4 +1,5 @@
 library(tibble)
+
 context("Validates Spek with Data")
 
 INPUT_TABLE_IRI <- "http://example.com/slowmo#input_table"
@@ -58,6 +59,7 @@ column_specification <-
   )
 
 test_that("returns boolean from given spek/data", {
+  skip('debugging')
   spek <- list()
   data <- tibble()
 
@@ -66,20 +68,24 @@ test_that("returns boolean from given spek/data", {
 })
 
 test_that("spek without column specification can't fail", {
+  skip('debugging')
   result <- validate_spek_data(spek_missing_cols, tibble())
   expect_true(result)
 })
 
-test_that("spek missing a column will fail", {
-  missing_col <- column_specification
-  missing_col[3] <- NULL
-  spek_missing_one_column <- spek_missing_cols
-  spek_missing_one_column[[INPUT_TABLE_IRI]][[1]][[TABLE_SCHEMA_IRI]][[1]][[COLUMNS_IRI]] <- missing_col
-  result <- validate_spek_data(spek_missing_one_column, data_all_cols)
+test_that("Spek with a column that is NOT present in data will fail.", {
+  spek_with_columns <- spek_missing_cols
+  spek_with_columns[[INPUT_TABLE_IRI]][[1]][[TABLE_SCHEMA_IRI]][[1]][[COLUMNS_IRI]] <- column_specification
+  
+  data_missing_one_column <- data_all_cols
+  data_missing_one_column['performer'] <- NULL
+  
+  result <- validate_spek_data(spek_with_columns, data_missing_one_column)
   expect_false(result)
 })
 
-test_that("speak with extra column passes", {
+test_that("spek with extra column passes", {
+  skip('debugging')
   spek_with_columns <- spek_missing_cols
   spek_with_columns[[INPUT_TABLE_IRI]][[1]][[TABLE_SCHEMA_IRI]][[1]][[COLUMNS_IRI]] <- column_specification
   data_extra_columns <- data_all_cols
