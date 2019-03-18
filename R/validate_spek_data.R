@@ -1,26 +1,38 @@
 #' @title Validate Spek and Data
 #' @export
 
-get_name_of_column <- function(col_specification) {
-  col_specification[['http://www.w3.org/ns/csvw#name']][[1]][['@value']]
+get_column_list <- function(spek) {
+  spek[[FR$INPUT_TABLE_IRI]][[1]][[FR$TABLE_SCHEMA_IRI]][[1]][[FR$COLUMNS_IRI]]
+}
+
+get_name_of_column <- function(column_specification) {
+  column_specification[['http://www.w3.org/ns/csvw#name']][[1]][['@value']]
+}
+
+get_use_of_column <- function(column_specification) {
+  column_specification[['http://example.com/slowmo#ColumnUse']][[1]][['@value']]
 }
 
 validate_spek_data <- function(spek, data) {
-
   #Get column names out of spek
-  column_list <- spek[[FR$INPUT_TABLE_IRI]][[1]][[FR$TABLE_SCHEMA_IRI]][[1]][[FR$COLUMNS_IRI]]
+  column_list <- get_column_list(spek)
   if(is.null(column_list)) {
-    return(TRUE)
+    return(FALSE)
   }
+
+  #Extract parts of the spek (using IRI's)
   column_names_spek <- sapply(column_list, FUN=get_name_of_column)
+  column_uses <- sapply(column_list, FUN=get_use_of_column)
 
-  #Get column names out of data
+  #Check that column names in spek are found in the data
   column_names_data <- names(data)
+  check1 <- all(column_names_spek %in% column_names_data)
 
-  if(all(column_names_spek %in% column_names_data)) {
-    return(TRUE)
-  }
+  #Check that column with an identifier use exists
+  check2 <- any(column_uses %in% c("identifier"))
 
-  #compare spek & data
-  return(FALSE)
+  #Check that a column with a value OR numerator exists
+  check3 <- any(column_uses %in% c("value", "numerator"))
+
+  return(all(check1, check2, check3))
 }
