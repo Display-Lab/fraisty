@@ -1,60 +1,65 @@
 context("main entry point")
 
-dummy_data_file <- function() {
-  temp_file <- file(tempfile(), "w+")
-  writeLines("string, with, commas", temp_file)
-  return(temp_file)
+dummy_data_path <- function() {
+  temp_path <- tempfile()
+  temp_file <- file(temp_path, "w+")
+  writeLines("string, with, commas\n1,2,3\n", temp_file)
+  close(temp_file)
+  return(temp_path)
 }
 
-dummy_spek_file <- function() {
-  temp_file <- file(tempfile(), "w+")
+dummy_spek_path <- function() {
+  spek_path <- tempfile()
+  temp_file <- file(spek_path, "w+")
   writeLines('{"key": "value"}', temp_file)
-  return(temp_file)
-}
-
-close_and_unlink <- function(conn) {
-  unlink(summary(conn)$description)
-  close(conn)
+  close(temp_file)
+  return(spek_path)
 }
 
 test_that("main accepts the CLI parameters", {
-  data_file <- dummy_data_file()
-  spek_file <- dummy_spek_file()
+  skip("debugging")
+  data_path <- dummy_data_path()
+  spek_path <- dummy_spek_path()
 
-  expect_silent(main(data_file, spek_file))
+  expect_silent(main(data_path, spek_path))
 
-  close_and_unlink(data_file)
-  close_and_unlink(spek_file)
+  unlink(data_path)
+  unlink(spek_path)
 })
 
 test_that("main can read from stdin", {
-  data_file <- dummy_data_file()
-  spek_file <- dummy_spek_file()
+  spek_path <- dummy_spek_path()
+  data_file <- file(tempfile(), "w+")
+  writeLines("string, with, commas\n1,2,3\n", data_file)
+  flush(data_file)
 
   options(fraisty.connection = data_file)
-  main(data_path=NULL, spek_file)
+  main(data_path=NULL, spek_path)
   expect_identical(readLines(data_file), character(0))
 
-  close_and_unlink(data_file)
-  close_and_unlink(spek_file)
-})
-
-test_that("main can read in spekfile", {
-  data_file <- dummy_data_file()
-  spek_file <- dummy_spek_file()
-
-  main(data_file, spek_file)
-  expect_identical(readLines(spek_file), character(0))
-
-  close_and_unlink(data_file)
-  close_and_unlink(spek_file)
+  unlink(summary(data_file)$description)
+  close(data_file)
+  unlink(spek_path)
 })
 
 test_that("main gives error when no spek is given", {
-  data_file <- dummy_data_file()
+  data_path <- dummy_data_path()
 
-  expect_error(main(data_file, spek_path=NULL), "no spek given")
+  expect_error(main(data_path, spek_path=NULL), "no spek given")
 
-  close_and_unlink(data_file)
+  unlink(data_path)
 })
+
+test_that("main gives an error when spek/data don't validate", {
+  skip("WIP: implement reading in spek/data")
+  data_path <- dummy_data_path()
+  spek_path <- dummy_spek_path()
+
+  expect_error(main(data_path=data_path, spek_path=spek_path), "spek doesn't validate with given data")
+
+  unlink(data_path)
+  unlink(spek_path)
+})
+
+
 

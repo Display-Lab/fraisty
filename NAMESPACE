@@ -2,10 +2,10 @@
 
 export(FR)
 export(check_spek)
-export(get_name_of_column)
 export(main)
 export(read_data)
 export(read_spek)
+export(validate_spek_data)
 import(dplyr)
 importFrom(jsonld,jsonld_expand)
 importFrom(jsonlite,fromJSON)
