@@ -33,21 +33,21 @@ column_specification <-
       `http://www.w3.org/ns/csvw#name` = list(list(`@value` = "performer")),
       `http://www.w3.org/ns/csvw#titles` = list(list(`@value` = "Name")),
       `http://purl.org/dc/terms/description` = list(list(`@value` = "Performer unique ID")),
-      `http://example.com/slowmo#use` = list(list(`@value` = "identifier"))
+      `http://example.com/slowmo#ColumnUse` = list(list(`@value` = "identifier"))
     ),
     list(
       `http://www.w3.org/ns/csvw#datatype` = list(list(`@value` = "integer")),
       `http://www.w3.org/ns/csvw#name` = list(list(`@value` = "timepoint")),
       `http://www.w3.org/ns/csvw#titles` = list(list(`@value` = "Time")),
       `http://purl.org/dc/terms/description` = list(list(`@value` = "Time at which performance was measured.")),
-      `http://example.com/slowmo#use` = list(list(`@value` = "time"))
+      `http://example.com/slowmo#ColumnUse` = list(list(`@value` = "time"))
     ),
     list(
       `http://www.w3.org/ns/csvw#datatype` = list(list(`@value` = "integer")),
       `http://www.w3.org/ns/csvw#name` = list(list(`@value` = "performance")),
       `http://www.w3.org/ns/csvw#titles` = list(list(`@value` = "Performance")),
       `http://purl.org/dc/terms/description` = list(list(`@value` = "Demonstration performance value")),
-      `http://example.com/slowmo#use` = list(list(`@value` = "value"))
+      `http://example.com/slowmo#ColumnUse` = list(list(`@value` = "value"))
     )
   )
 
@@ -59,12 +59,12 @@ test_that("returns boolean from given spek/data", {
   expect_type(result, "logical")
 })
 
-test_that("spek without column specification can't fail", {
+test_that("spek without column specification can't pass", {
   result <- validate_spek_data(spek_missing_cols, tibble())
-  expect_true(result)
+  expect_false(result)
 })
 
-test_that("Spek with a column that is NOT present in data will fail.", {
+test_that("spek with a column that is NOT present in data will fail.", {
   spek_with_columns <- spek_missing_cols
   spek_with_columns[[FR$INPUT_TABLE_IRI]][[1]][[FR$TABLE_SCHEMA_IRI]][[1]][[FR$COLUMNS_IRI]] <- column_specification
 
@@ -82,4 +82,38 @@ test_that("spek with extra column passes", {
   data_extra_columns["extra"] <- c("extra", "column", "space")
   result <- validate_spek_data(spek_with_columns, data_extra_columns)
   expect_true(result)
+})
+
+test_that("spek without a identifier column fails", {
+  spek_with_columns <- spek_missing_cols
+  column_specification_sans_identifier <- column_specification
+  column_specification_sans_identifier[[1]] <- NULL
+  spek_with_columns[[FR$INPUT_TABLE_IRI]][[1]][[FR$TABLE_SCHEMA_IRI]][[1]][[FR$COLUMNS_IRI]] <- column_specification_sans_identifier
+  result <- validate_spek_data(spek_with_columns, data_all_cols)
+  expect_false(result)
+})
+
+test_that("spek without a value OR numerator column fails", {
+  spek_with_columns <- spek_missing_cols
+  column_specification_sans_value <- column_specification
+  column_specification_sans_value[[3]] <- NULL
+  spek_with_columns[[FR$INPUT_TABLE_IRI]][[1]][[FR$TABLE_SCHEMA_IRI]][[1]][[FR$COLUMNS_IRI]] <- column_specification_sans_value
+  result <- validate_spek_data(spek_with_columns, data_all_cols)
+  expect_false(result)
+})
+
+test_that("spek with a value OR numerator is sufficient", {
+  spek_with_numerator <- spek_missing_cols
+  spek_with_columns <- spek_missing_cols
+  column_specification_numerator <- column_specification
+  column_specification_numerator[[3]] <- list(
+    `http://www.w3.org/ns/csvw#name` = list(list(`@value` = "performance")),
+    `http://example.com/slowmo#ColumnUse` = list(list(`@value` = "numerator"))
+    )
+  spek_with_numerator[[FR$INPUT_TABLE_IRI]][[1]][[FR$TABLE_SCHEMA_IRI]][[1]][[FR$COLUMNS_IRI]] <- column_specification_numerator
+  spek_with_columns[[FR$INPUT_TABLE_IRI]][[1]][[FR$TABLE_SCHEMA_IRI]][[1]][[FR$COLUMNS_IRI]] <- column_specification
+
+  result_with_numerator <- validate_spek_data(spek_with_numerator, data_all_cols)
+  result_with_value <- validate_spek_data(spek_with_columns, data_all_cols)
+  expect_true(all(result_with_numerator, result_with_value))
 })
