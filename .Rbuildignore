@@ -3,4 +3,4 @@
 ^data$
 ^bin$
 ^\.travis\.yml$
-^exampledata$
+^example_data$

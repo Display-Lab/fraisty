@@ -17,5 +17,7 @@ Imports:
   jsonld,
   jsonlite,
   readr,
-  rlang
+  rlang,
+  dplyr,
+  stats
 RoxygenNote: 6.1.1

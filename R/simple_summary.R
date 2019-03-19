@@ -1,19 +1,3 @@
-get_id_col_from_spek <- function(spek) {
-  column_list <- get_column_list(spek)
-  column_names <- sapply(column_list, FUN=get_name_of_column)
-  column_uses <- sapply(column_list, FUN=get_use_of_column)
-
-  return(column_names[which(column_uses == "identifier")])
-}
-
-get_value_or_numerator_col_from_spek <- function(spek) {
-  column_list <- get_column_list(spek)
-  column_names <- sapply(column_list, FUN=get_name_of_column)
-  column_uses <- sapply(column_list, FUN=get_use_of_column)
-
-  return(column_names[which(column_uses == "value" || column_uses == "numerator")])
-}
-
 #' @title Simple Summary
 #' @description Processes input data int num_performers, min_performer, max_performer
 #' @import dplyr
@@ -33,5 +17,13 @@ simple_summary <- function(data, spek) {
   #Maximum measurement count of all performers
   max_performer <- max(performers_counts$lengths)
 
-  return(list("num_performers"=num_performers, "min_performer"=min_performer, "max_performer"=max_performer))
+  benchmark_ten <- achievable_benchmark(data=data,
+                                        id_column_name=id_col_name,
+                                        value_column_name=value_or_numerator_col_name)
+
+  result <- list("num_performers"=num_performers,
+                 "min_performer"=min_performer,
+                 "max_performer"=max_performer,
+                 "benchmark_ten"=benchmark_ten)
+  return(result)
 }

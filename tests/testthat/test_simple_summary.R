@@ -59,7 +59,7 @@ spek_with_cols <-
 test_that("simple summary returns list with expected members", {
   result <- simple_summary(data=data_all_cols, spek=spek_with_cols)
   expect_type(result, "list")
-  expect_true(all(names(result) %in% c("num_performers","min_performer","max_performer")))
+  expect_true(all(names(result) %in% c("num_performers","min_performer","max_performer", "benchmark_ten")))
 })
 
 test_that("simple summary reports number of performers", {
@@ -75,4 +75,9 @@ test_that("simple summary reports minimum number of observations of all performe
 test_that("simple summary reports maximum number of observations of all performer", {
   result <- simple_summary(data=data_all_cols, spek=spek_with_cols)
   expect_equal(result$max_performer, 3)
+})
+
+test_that("simple summary includes achievable benchmark", {
+  result <- simple_summary(data=data_all_cols, spek=spek_with_cols)
+  expect_equal(result$benchmark_ten, 80/3)
 })

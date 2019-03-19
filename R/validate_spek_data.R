@@ -1,18 +1,6 @@
 #' @title Validate Spek and Data
 #' @export
 
-get_column_list <- function(spek) {
-  spek[[FR$INPUT_TABLE_IRI]][[1]][[FR$TABLE_SCHEMA_IRI]][[1]][[FR$COLUMNS_IRI]]
-}
-
-get_name_of_column <- function(column_specification) {
-  column_specification[['http://www.w3.org/ns/csvw#name']][[1]][['@value']]
-}
-
-get_use_of_column <- function(column_specification) {
-  column_specification[['http://example.com/slowmo#ColumnUse']][[1]][['@value']]
-}
-
 validate_spek_data <- function(spek, data) {
   #Get column names out of spek
   column_list <- get_column_list(spek)
