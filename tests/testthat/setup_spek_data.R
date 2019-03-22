@@ -120,17 +120,12 @@ generate_data_all_cols <- function(){
     )
 }
 
-
 # On disk fixtures data and spek that are small facsimiles of actual data and spek
-PATH_TO_FIXTURE_DATA <- system.file(file.path("tests", "fixtures", "sample_mtx.csv"),
-                                    package = "fraisty",
-                                    mustWork = T)
-
-PATH_TO_FIXTURE_SPEK <- system.file(file.path("tests", "fixtures", "spek.json"),
-                                    package = "fraisty",
-                                    mustWork = T)
+PATH_TO_FIXTURE_DATA <-  system.file(file.path("fixtures", "sample_mtx.csv"), 
+                                     package = "fraisty", mustWork = T)
+PATH_TO_FIXTURE_SPEK <-  system.file(file.path("fixtures", "spek.json"), 
+                                     package = "fraisty", mustWork = T)
 
 # Fixture data that is lacking the behavior columns and should not validate.
-PATH_TO_LACKING_DATA <- system.file(file.path("tests", "fixtures", "lacking_mtx.csv"),
-                                    package = "fraisty",
-                                    mustWork = T)
+PATH_TO_LACKING_DATA <- system.file(file.path("fixtures", "lacking_mtx.csv"),
+                                    package = "fraisty", mustWork = T)

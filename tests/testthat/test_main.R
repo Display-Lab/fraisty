@@ -1,21 +1,5 @@
 context("main entry point")
 
-dummy_data_path <- function() {
-  temp_path <- tempfile()
-  temp_file <- file(temp_path, "w+")
-  writeLines("string, with, commas\n1,2,3\n", temp_file)
-  close(temp_file)
-  return(temp_path)
-}
-
-dummy_spek_path <- function() {
-  spek_path <- tempfile()
-  temp_file <- file(spek_path, "w+")
-  writeLines('{"key": "value"}', temp_file)
-  close(temp_file)
-  return(spek_path)
-}
-
 test_that("main accepts the CLI parameters", {
   data_path <- PATH_TO_FIXTURE_DATA
   spek_path <- PATH_TO_FIXTURE_SPEK
