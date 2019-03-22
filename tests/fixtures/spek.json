@@ -72,21 +72,21 @@
           "dc:description": "Practice unique ID", 
           "csvw:name": "practice", 
           "csvw:titles": "Practice",
-          "slowmo:use": "identifier"
+          "slowmo:ColumnUse": "identifier"
         },
         {
           "csvw:datatype": "date", 
           "dc:description": "Month during which mtx was perscribed.", 
           "csvw:name": "period", 
           "csvw:titles": "Period",
-          "slowmo:use": "time"
+          "slowmo:ColumnUse": "time"
         },
         {
           "csvw:datatype": "decimal", 
           "dc:description": "Ratio of high dose mtx perscriptions", 
           "csvw:name": "hd_script_ratio", 
           "csvw:titles": "Ratio of High Dose MTX Perscriptions",
-          "slowmo:use": "value"
+          "slowmo:ColumnUse": "value"
         }
       ] 
     } 
