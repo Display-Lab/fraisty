@@ -1,7 +1,7 @@
 #' @title main
 #' @importFrom rlang abort
 #' @export
-main <- function(data_path=NULL, spek_path=NULL) {
+main <- function(data_path=NULL, spek_path=NULL, figure_path=NULL) {
   if(is.null(data_path)) {
     data_conn <- getOption("fraisty.connection", default = "stdin")
     raw_data <- paste(collapse = "\n", readLines(data_conn))
