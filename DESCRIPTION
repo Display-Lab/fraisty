@@ -19,5 +19,7 @@ Imports:
   readr,
   rlang,
   dplyr,
-  stats
+  stats,
+  ggplot2,
+  cowplot
 RoxygenNote: 6.1.1
