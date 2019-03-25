@@ -15,9 +15,10 @@ Fraisty reads the data from stdin or provided file path.  Unless output file
 is specified, it prints a report to stdout.
 
 Options:
-  -h | --help   print help and exit
-  -s | --spek   path to spek file (default to stdin)
-  -d | --data   path to data file
+  -h | --help       print help and exit
+  -s | --spek       path to spek file (default to stdin)
+  -d | --data       path to data file
+  -f | --fig-dir    path to the output directory
 HEREDOC
 
 # Parse args
@@ -38,6 +39,11 @@ while (( "$#" )); do
       shift
       shift
       ;;
+    -f|--fig-dir)
+      FIGURE_DIR="'${2}'"
+      shift
+      shift
+      ;;
     --) # end argument parsing if no argument is left
       shift
       break
@@ -55,6 +61,7 @@ done
 
 INPUT_ARGS="spek_path=${SPEK_FILE:-NULL},\
   data_path=${DATA_FILE:-NULL}"
+
 
 EXPR="fraisty::main(${INPUT_ARGS})"
 Rscript --vanilla --default-packages=fraisty -e "${EXPR}"
