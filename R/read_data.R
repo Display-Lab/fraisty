@@ -1,6 +1,6 @@
 #' @title Read in spek
 #' @importFrom rlang abort
-#' @importFrom readr read_csv
+#' @importFrom readr read_csv cols
 #' @export
 
 read_data <- function(path) {
@@ -8,5 +8,6 @@ read_data <- function(path) {
     rlang::abort("no path provided")
   }
 
-  read_csv(path)
+  # Explicitly use guessing of col_types to avoid warning.
+  readr::read_csv(path, col_types = readr::cols())
 }
