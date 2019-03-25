@@ -16,6 +16,7 @@ main <- function(data_path=NULL, spek_path=NULL) {
   if(!validate_spek_data(spek, data)) {
     rlang::abort("spek doesn't validate with given data")
   }
-  simple_summary(data=data, spek=spek)
-  return(TRUE)
+  summary <- simple_summary(data=data, spek=spek)
+  print(format(summary))
+  return(invisible(TRUE))
 }

@@ -4,7 +4,7 @@ test_that("main accepts the CLI parameters", {
   data_path <- PATH_TO_FIXTURE_DATA
   spek_path <- PATH_TO_FIXTURE_SPEK
 
-  expect_silent(main(data_path, spek_path))
+  expect_true(main(data_path, spek_path))
 })
 
 test_that("main can read from stdin", {
@@ -37,7 +37,20 @@ test_that("main gives an error when spek/data don't validate", {
 test_that("main emits a simple summary list to std out", {
   data_path <- PATH_TO_FIXTURE_DATA
   spek_path <- PATH_TO_FIXTURE_SPEK
-  result <- capture.output(fraisty::main(data_path, spek_path),type="output")
+  # captured output one element per line collapsed into single string (for grepl)
+  result <- capture.output(main(data_path, spek_path),type="output")
+  collapsed_result <- paste0(result, collapse="\n")
+  patterns <- c("num_performers", "min_performer", "max_performer", "benchmark_ten")
+  pattern_found <- sapply(patterns, FUN=grepl, x=collapsed_result)
+  expect_true(all(pattern_found))
+})
 
-  expect_type(result, 'character')
+test_that("main returns true invisibly", {
+  data_path <- PATH_TO_FIXTURE_DATA
+  spek_path <- PATH_TO_FIXTURE_SPEK
+  # captured output one element per line collapsed into single string (for grepl)
+  result <- capture.output(main(data_path, spek_path),type="output")
+  collapsed_result <- paste0(result, collapse="\n")
+  boolean_in_output <- grepl(pattern="TRUE", x=collapsed_result)
+  expect_false(boolean_in_output)
 })
