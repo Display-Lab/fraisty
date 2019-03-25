@@ -11,7 +11,7 @@ Usage:
   fraisty.sh --data demo-data.csv --spek demo-spek.json
   fraisty.sh --spek demo-spek.json
 
-Fraisty reads the data from stdin or provided file path.  Unless output file 
+Fraisty reads the data from stdin or provided file path.  Unless output file
 is specified, it prints a report to stdout.
 
 Options:
@@ -57,5 +57,4 @@ INPUT_ARGS="spek_path=${SPEK_FILE:-NULL},\
   data_path=${DATA_FILE:-NULL}"
 
 EXPR="fraisty::main(${INPUT_ARGS})"
-echo $EXPR
-
+Rscript --vanilla --default-packages=fraisty -e "${EXPR}"
