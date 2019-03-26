@@ -7,3 +7,4 @@ example_data/*
 *.Rproj
 man/*
 scratch.R
+*.pdf
