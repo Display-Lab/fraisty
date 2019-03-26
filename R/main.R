@@ -17,6 +17,9 @@ main <- function(data_path=NULL, spek_path=NULL, figure_path=NULL) {
     rlang::abort("spek doesn't validate with given data")
   }
   summary <- simple_summary(data=data, spek=spek)
+  if(!is.null(figure_path)) {
+    emit_figure(data, spek, summary, figure_path)
+  }
   print(format(summary))
   return(invisible(TRUE))
 }

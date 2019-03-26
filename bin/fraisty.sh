@@ -61,7 +61,7 @@ done
 
 INPUT_ARGS="spek_path=${SPEK_FILE:-NULL},\
   data_path=${DATA_FILE:-NULL},\
-  figure_path=${FIRGURE_DIR:-NULL}"
+  figure_path=${FIGURE_DIR:-NULL}"
 
 
 EXPR="fraisty::main(${INPUT_ARGS})"
