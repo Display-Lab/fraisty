@@ -21,5 +21,6 @@ Imports:
   dplyr,
   stats,
   ggplot2,
-  cowplot
+  cowplot,
+  grDevices
 RoxygenNote: 6.1.1
