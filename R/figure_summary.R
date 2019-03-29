@@ -6,6 +6,7 @@
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 labs
 #' @importFrom cowplot plot_grid
+#' @importFrom grDevices pdf
 
 figure_summary <- function(data, column_name, summary) {
   column_sym <- rlang::sym(column_name)
@@ -13,6 +14,10 @@ figure_summary <- function(data, column_name, summary) {
   bin_width_ten <- max_value / 10
   bin_width_twenty <- max_value / 5
   bin_width_ab <- summary$benchmark_ten / 20
+
+  # Hack to prevent 0 byte pdf artifact from being generated
+  # see https://github.com/wilkelab/cowplot/issues/24
+  grDevices::pdf(file=NULL)
 
   gg10 <- ggplot2::ggplot(data=data, ggplot2::aes(x=!!column_sym)) +
     ggplot2::geom_histogram(binwidth=bin_width_ten, color="skyblue", fill="blue") +
