@@ -13,6 +13,8 @@
     "slowmo:uses_ISR":         "http://example.com/slowmo#slowmo_0000002",
     "slowmo:rid_template":     "http://example.com/slowmo#template",
     "slowmo:spek":                  "http://example.com/slowmo#slowmo_0000140",
+    "slowmo:IsAboutTemplate":       "http://example.com/slowmo#IsAboutTemplate",
+    "slowmo:ColumnUse":             "http://example.com/slowmo#ColumnUse",
     "cpo:ISR":                      "http://example.com/cpo#cpo_0000029",
     "slowmo:normative_comparator":  "http://example.com/slowmo#normative_comparator",
     "cpo:prevention_framing":       "http://example.com/cpo#cpo_0000038",
@@ -45,6 +47,15 @@
     "dc:title": "High Dose MethoTrexate Perscribing",
     "slowmo:goal": "http://example/com/slomo#achievable_benchmark"
   },
+  "slowmo:IsAboutTemplate": [
+    { "@id": "http://example.com/app#SingleLineGraph" },
+    { "@id": "http://example.com/app#ComparisonLineGraph" },
+    { "@id": "http://example.com/app#ComparisonBarGraphVert" },
+    { "@id": "http://example.com/app#ComparisonBarGraphHor" },
+    { "@id": "http://example.com/app#Leaderboard" },
+    { "@id": "http://example.com/app#EnhancedLeaderboard" },
+    { "@id": "http://example.com/app#TopPerformerGraph" },
+    { "@id": "http://example.com/app#IUDGraph" }],
   "slowmo:input_table":{
     "@type": "csvw:Table",
     "dc:title": "High dose MTX perscription ratios.", 
