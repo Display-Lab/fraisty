@@ -5,7 +5,7 @@ generate_full_spek <- function(){
   list(
     `@id` = "http://example.com/app#example-client",
     `@type` = "http://example.com/slowmo#slowmo_0000140",
-    `http://example.com/slowmo#input_table` = list(
+    `http://example.com/slowmo#InputTable` = list(
       list(
         `@type` = "http://www.w3.org/ns/csvw#Table",
         `http://www.w3.org/ns/csvw#dialect` = list(
@@ -65,7 +65,7 @@ generate_missing_cols_spek <- function(){
         `http://example.com/slowmo#guideline` = list(list(`@value` = 10L))
       )
     ),
-    `http://example.com/slowmo#input_table` = list(
+    `http://example.com/slowmo#InputTable` = list(
       list(
         `@type` = "http://www.w3.org/ns/csvw#Table",
         `http://www.w3.org/ns/csvw#tableSchema` = list(structure(list(), .Names = character(0))),
